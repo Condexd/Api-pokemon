@@ -1,5 +1,36 @@
+.app{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
 .buttons-container{
     width: 300px;
     display: flex;
     justify-content: space-between;
+}
+
+.card-container{
+    border: 4px solid;
+    display: flex; 
+    width: 500px;
+    height: 300px;
+    margin-top: 80px;
+    position: relative;
+}
+
+.card-container .card:nth-child(1){
+    position: absolute;
+    left: 0;
+    z-index: 3;
+}
+.card-container .card:nth-child(2){
+    position: absolute;
+    left: 150px;
+    z-index: 2;
+}
+.card-container .card:nth-child(3){
+    position: absolute;
+    left: 300px;
+    z-index: 1;
 }

@@ -7,12 +7,48 @@ import'./sass/App.scss'
 import { TiArrowLeftThick } from "react-icons/ti";
 import { TiArrowRightThick } from "react-icons/ti";
 //Hooks:
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 
 const App = () =>{
     
     const [pokemonId, setPokemonId] = useState(1);
+    const [pokemonEvolutions,setPokemonEvolutions]=useState([]);
+
+    useEffect(()=>{
+        getEvolutions(pokemonId);
+    }, [pokemonId])
+
+    async function getEvolutions (id){
+        const response = await fetch(`https://pokeapi.co/api/v2/evolution-chain/${id}/`)
+        const data = await response.json()
+
+        let pokemonEvoArray = []
+
+        let pokemonv1 = data.chain.species.name
+        let pokemonlv1Img = await getPokemonImgs(pokemonv1)
+        pokemonEvoArray.push([pokemonv1,pokemonlv1Img])
+
+        if(data.chain.evolves_to.lenght !==0){
+            let pokemonv2 = data.chain.evolves_to[0].species.name;
+            let pokemonlv2Img = await getPokemonImgs(pokemonv2)
+            pokemonEvoArray.push([pokemonv2,pokemonlv2Img])
+            
+
+            if(data.chain.evolves_to[0].evolves_to.lenght!==0){
+                let pokemonv3= data.chain.evolves_to[0].evolves_to[0].species.name
+                let pokemonlv3Img =await getPokemonImgs(pokemonv3)
+                pokemonEvoArray.push([pokemonv3,pokemonlv3Img])
+                setPokemonEvolutions (pokemonEvoArray)
+            }
+        }
+    }
+
+    async function getPokemonImgs(name){
+        const response=await fetch (`https://pokeapi.co/api/v2/pokemon/${name}/`)
+        const data =await response.json()
+        return data.sprites.other['official-artwork'].front_default
+    }
 
     function prevClick(){
         (pokemonId === 1)?
@@ -25,20 +61,29 @@ const App = () =>{
     }
 
     return(
-        <>
-            {/* tarjetas */}
+        <div className="app">  
+            <div className="card-container">
+                {pokemonEvolutions.map(pokemon => 
+                <Card 
+                    key={pokemon[0]}
+                    name={pokemon[0]}
+                    img={pokemon[1]}
+                />
+                )}
+            </div>
+            
             <div className="buttons-container">
                 <Button 
                     icon={<TiArrowLeftThick />} 
                     handleClick={prevClick}
                 />
-                {pokemonId}
+                
                 <Button 
                     icon={<TiArrowRightThick/>}
                     handleClick={nextClick}
                 />
             </div>
-        </>
+        </div>
         )
 }
 
