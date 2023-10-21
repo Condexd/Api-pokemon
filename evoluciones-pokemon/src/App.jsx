@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+//Componentes:
+import {Button} from "./components/Button"
+import { Card } from "./components/Card";
+//Estilos:
+import'./sass/App.scss'
+//Iconos:
+import { TiArrowLeftThick } from "react-icons/ti";
+import { TiArrowRightThick } from "react-icons/ti";
+//Hooks:
+import { useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+const App = () =>{
+    
+    const [pokemonId, setPokemonId] = useState(1);
+
+    function prevClick(){
+        (pokemonId === 1)?
+            setPokemonId(1):
+            setPokemonId(pokemonId -1)    
+    }
+
+    function nextClick(){
+        setPokemonId(pokemonId +1)
+    }
+
+    return(
+        <>
+            {/* tarjetas */}
+            <div className="buttons-container">
+                <Button 
+                    icon={<TiArrowLeftThick />} 
+                    handleClick={prevClick}
+                />
+                {pokemonId}
+                <Button 
+                    icon={<TiArrowRightThick/>}
+                    handleClick={nextClick}
+                />
+            </div>
+        </>
+        )
 }
 
-export default App
+export{App}
