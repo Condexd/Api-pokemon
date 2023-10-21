@@ -12,7 +12,7 @@ import { useState,useEffect } from "react";
 
 const App = () =>{
     
-    const [pokemonId, setPokemonId] = useState(1);
+    const [pokemonId, setPokemonId] = useState(60);
     const [pokemonEvolutions,setPokemonEvolutions]=useState([]);
 
     useEffect(()=>{
@@ -33,21 +33,23 @@ const App = () =>{
             let pokemonv2 = data.chain.evolves_to[0].species.name;
             let pokemonlv2Img = await getPokemonImgs(pokemonv2)
             pokemonEvoArray.push([pokemonv2,pokemonlv2Img])
+
             
 
             if(data.chain.evolves_to[0].evolves_to.lenght!==0){
                 let pokemonv3= data.chain.evolves_to[0].evolves_to[0].species.name
                 let pokemonlv3Img =await getPokemonImgs(pokemonv3)
                 pokemonEvoArray.push([pokemonv3,pokemonlv3Img])
-                setPokemonEvolutions (pokemonEvoArray)
+            
             }
         }
+        setPokemonEvolutions(pokemonEvoArray)
     }
 
     async function getPokemonImgs(name){
         const response=await fetch (`https://pokeapi.co/api/v2/pokemon/${name}/`)
         const data =await response.json()
-        return data.sprites.other['official-artwork'].front_default
+        return data.sprites.other['official-artwork'].front_default;
     }
 
     function prevClick(){
@@ -62,7 +64,7 @@ const App = () =>{
 
     return(
         <div className="app">  
-            <div className="card-container">
+            <div className= {`card-container${pokemonEvolutions}`}>
                 {pokemonEvolutions.map(pokemon => 
                 <Card 
                     key={pokemon[0]}
