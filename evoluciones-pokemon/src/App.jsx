@@ -29,19 +29,20 @@ const App = () =>{
         let pokemonlv1Img = await getPokemonImgs(pokemonv1)
         pokemonEvoArray.push([pokemonv1,pokemonlv1Img])
 
-        if(data.chain.evolves_to.lenght !==0){
+        if(data.chain.evolves_to.length !==0){
             let pokemonv2 = data.chain.evolves_to[0].species.name;
             let pokemonlv2Img = await getPokemonImgs(pokemonv2)
             pokemonEvoArray.push([pokemonv2,pokemonlv2Img])
             
 
-            if(data.chain.evolves_to[0].evolves_to.lenght!==0){
+            if(data.chain.evolves_to[0].evolves_to.length !==0){
                 let pokemonv3= data.chain.evolves_to[0].evolves_to[0].species.name
                 let pokemonlv3Img =await getPokemonImgs(pokemonv3)
                 pokemonEvoArray.push([pokemonv3,pokemonlv3Img])
-                setPokemonEvolutions (pokemonEvoArray)
+                
             }
         }
+        setPokemonEvolutions (pokemonEvoArray)
     }
 
     async function getPokemonImgs(name){
@@ -62,7 +63,7 @@ const App = () =>{
 
     return(
         <div className="app">  
-            <div className="card-container">
+            <div className={`card-container card${pokemonEvolutions.length}`}>
                 {pokemonEvolutions.map(pokemon => 
                 <Card 
                     key={pokemon[0]}
